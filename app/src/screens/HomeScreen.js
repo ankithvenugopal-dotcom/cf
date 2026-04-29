@@ -106,11 +106,23 @@ export default function HomeScreen({ navigation }) {
           <TouchableOpacity style={s.avatar} onPress={() => navigation.navigate('More')}>
             <Text style={s.avatarText}>{(user?.name || 'U')[0].toUpperCase()}</Text>
           </TouchableOpacity>
-          <Text style={s.topTitle}>Today</Text>
+          <View>
+            <Text style={s.greeting}>Hey, {user?.name?.split(' ')[0] || 'there'} 👋</Text>
+            <Text style={s.subGreeting}>Here's your plan for today</Text>
+          </View>
           <TouchableOpacity style={s.bellBtn} onPress={() => navigation.navigate('Craving')}>
             <Text style={s.bellIcon}>🍔</Text>
           </TouchableOpacity>
         </View>
+
+        {/* ── Stats Row ────────────────────────────────────────── */}
+        {profile && (
+          <View style={s.statsRow}>
+            <StatCard label="Daily Target" value={profile.targetCalories} unit="kcal" />
+            <StatCard label="Protein"      value={profile.macros?.proteinG} unit="g" />
+            <StatCard label="Goal"         value={(user?.goal || '').replace('_', ' ')} unit="" />
+          </View>
+        )}
 
         {/* ── Calorie Card ─────────────────────────────────────── */}
         <View style={s.calorieCard}>
@@ -255,6 +267,17 @@ export default function HomeScreen({ navigation }) {
   );
 }
 
+// ── StatCard ─────────────────────────────────────────────────────────────────
+
+function StatCard({ label, value, unit }) {
+  return (
+    <View style={s.statCard}>
+      <Text style={s.statValue}>{value}<Text style={s.statUnit}> {unit}</Text></Text>
+      <Text style={s.statLabel}>{label}</Text>
+    </View>
+  );
+}
+
 // ── CalorieRing ──────────────────────────────────────────────────────────────
 
 function CalorieRing({ remaining, goal, isOver }) {
@@ -368,12 +391,20 @@ const s = StyleSheet.create({
   center:       { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.bg },
 
   // Top Bar
-  topBar:       { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, paddingTop: 56, paddingBottom: 14 },
-  avatar:       { width: 40, height: 40, borderRadius: 20, backgroundColor: '#4A4A7A', justifyContent: 'center', alignItems: 'center' },
-  avatarText:   { fontSize: 16, fontWeight: '700', color: COLORS.text },
-  topTitle:     { fontSize: 17, fontWeight: '600', color: COLORS.text },
-  bellBtn:      { width: 40, height: 40, borderRadius: 20, backgroundColor: COLORS.surface, justifyContent: 'center', alignItems: 'center' },
+  topBar:       { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, paddingTop: 56, paddingBottom: 16, backgroundColor: COLORS.surface },
+  avatar:       { width: 42, height: 42, borderRadius: 21, backgroundColor: '#4A4A7A', justifyContent: 'center', alignItems: 'center' },
+  avatarText:   { fontSize: 17, fontWeight: '700', color: COLORS.text },
+  greeting:     { fontSize: 17, fontWeight: '700', color: COLORS.text, textAlign: 'center' },
+  subGreeting:  { fontSize: 12, color: COLORS.muted, textAlign: 'center', marginTop: 2 },
+  bellBtn:      { width: 42, height: 42, borderRadius: 21, backgroundColor: COLORS.cardAlt, justifyContent: 'center', alignItems: 'center' },
   bellIcon:     { fontSize: 18 },
+
+  // Stats row
+  statsRow:     { flexDirection: 'row', gap: 10, paddingHorizontal: 16, paddingVertical: 14, backgroundColor: COLORS.surface, borderBottomWidth: 1, borderBottomColor: COLORS.border },
+  statCard:     { flex: 1, backgroundColor: COLORS.cardAlt, borderRadius: 12, padding: 12, alignItems: 'center' },
+  statValue:    { fontSize: 17, fontWeight: '700', color: COLORS.text },
+  statUnit:     { fontSize: 11, fontWeight: '400', color: COLORS.muted },
+  statLabel:    { fontSize: 11, color: COLORS.muted, marginTop: 3 },
 
   // Calorie Card
   calorieCard:  { backgroundColor: COLORS.surface, marginHorizontal: 16, borderRadius: 16, padding: 20, marginBottom: 12 },
