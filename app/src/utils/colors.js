@@ -1,18 +1,31 @@
-// CraveFit design tokens
 export const COLORS = {
-  primary:    '#FF6B35',  // energetic orange — "craving" brand color
-  secondary:  '#2EC4B6',  // teal — progress/health
+  // Brand
+  primary:    '#FF6B35',   // CraveFit orange — cravings
+  blue:       '#4D9DE0',   // calorie remaining accent
+  secondary:  '#2EC4B6',   // teal — protein
   success:    '#4CAF50',
   warning:    '#FFC107',
   danger:     '#F44336',
-  dark:       '#1A1A2E',
-  mid:        '#3A3A5C',
+
+  // Dark theme surfaces
+  bg:         '#121212',
+  surface:    '#1C1C2E',
+  card:       '#1C1C2E',
+  cardAlt:    '#252540',
+  border:     '#2C2C42',
+
+  // Text
+  text:       '#FFFFFF',
+  textSub:    '#B0B0C8',
+  muted:      '#6E6E8A',
+
+  // Legacy aliases (keep existing screens working)
+  dark:       '#FFFFFF',
+  mid:        '#B0B0C8',
   light:      '#F8F9FA',
   white:      '#FFFFFF',
-  muted:      '#9E9E9E',
-  cardBg:     '#FFFFFF',
-  screenBg:   '#F4F4F8',
-  border:     '#E0E0E0',
+  cardBg:     '#1C1C2E',
+  screenBg:   '#121212',
 };
 
 export const FONTS = {

@@ -24,6 +24,10 @@ export default function FoodLogScreen({ navigation }) {
   }, [today]);
 
   useEffect(() => { loadLog(); }, [loadLog]);
+  useEffect(() => {
+    const unsub = navigation.addListener('focus', loadLog);
+    return unsub;
+  }, [navigation, loadLog]);
 
   const handleSearch = useCallback(async (text) => {
     setQuery(text);
@@ -64,14 +68,20 @@ export default function FoodLogScreen({ navigation }) {
     }
   }, [loadLog, today]);
 
+  const canGoBack = navigation.canGoBack();
+
   return (
     <View style={s.screen}>
       <View style={s.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={s.backBtn}>
-          <Text style={s.backText}>←</Text>
-        </TouchableOpacity>
-        <Text style={s.title}>Log Food</Text>
-        <Text style={s.subtitle}>Today · {today}</Text>
+        {canGoBack && (
+          <TouchableOpacity onPress={() => navigation.goBack()} style={s.backBtn}>
+            <Text style={s.backText}>←</Text>
+          </TouchableOpacity>
+        )}
+        <View>
+          <Text style={s.title}>Diary</Text>
+          <Text style={s.subtitle}>Today · {today}</Text>
+        </View>
       </View>
 
       {/* Summary bar */}
@@ -165,36 +175,36 @@ function SumChip({ label, value, unit, color }) {
 }
 
 const s = StyleSheet.create({
-  screen:       { flex: 1, backgroundColor: COLORS.screenBg },
-  header:       { backgroundColor: COLORS.primary, padding: 20, paddingTop: 52 },
-  backBtn:      { marginBottom: 6 },
-  backText:     { color: COLORS.white, fontSize: 22, fontWeight: '700' },
-  title:        { fontSize: 22, fontWeight: '700', color: COLORS.white },
-  subtitle:     { fontSize: 13, color: COLORS.white + 'CC', marginTop: 2 },
-  summaryRow:   { flexDirection: 'row', padding: 12, gap: 8, backgroundColor: COLORS.white, borderBottomWidth: 1, borderBottomColor: COLORS.border },
+  screen:       { flex: 1, backgroundColor: COLORS.bg },
+  header:       { flexDirection: 'row', alignItems: 'flex-end', gap: 12, backgroundColor: COLORS.surface, padding: 20, paddingTop: 56, borderBottomWidth: 1, borderBottomColor: COLORS.border },
+  backBtn:      { paddingBottom: 4 },
+  backText:     { color: COLORS.text, fontSize: 22, fontWeight: '700' },
+  title:        { fontSize: 22, fontWeight: '700', color: COLORS.text },
+  subtitle:     { fontSize: 13, color: COLORS.muted, marginTop: 2 },
+  summaryRow:   { flexDirection: 'row', padding: 12, gap: 8, backgroundColor: COLORS.surface, borderBottomWidth: 1, borderBottomColor: COLORS.border },
   sumChip:      { flex: 1, alignItems: 'center' },
   sumValue:     { fontSize: 16, fontWeight: '700' },
   sumUnit:      { fontSize: 10, fontWeight: '400', color: COLORS.muted },
   sumLabel:     { fontSize: 10, color: COLORS.muted, marginTop: 1 },
-  cheatBar:     { backgroundColor: '#FFF3E0', borderBottomWidth: 1, borderBottomColor: '#FFE0B2', paddingHorizontal: 16, paddingVertical: 8 },
-  cheatBarLabel:{ fontSize: 13, color: '#E65100', fontWeight: '600' },
-  searchWrap:   { margin: 12, flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.white, borderRadius: 12, borderWidth: 1, borderColor: COLORS.border },
-  searchInput:  { flex: 1, padding: 14, fontSize: 15, color: COLORS.dark },
+  cheatBar:     { backgroundColor: COLORS.primary + '18', borderBottomWidth: 1, borderBottomColor: COLORS.primary + '30', paddingHorizontal: 16, paddingVertical: 8 },
+  cheatBarLabel:{ fontSize: 13, color: COLORS.primary, fontWeight: '600' },
+  searchWrap:   { margin: 12, flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.surface, borderRadius: 12, borderWidth: 1, borderColor: COLORS.border },
+  searchInput:  { flex: 1, padding: 14, fontSize: 15, color: COLORS.text },
   searchSpinner:{ marginRight: 12 },
-  resultsBox:   { marginHorizontal: 12, backgroundColor: COLORS.white, borderRadius: 12, borderWidth: 1, borderColor: COLORS.border, overflow: 'hidden', marginBottom: 8 },
+  resultsBox:   { marginHorizontal: 12, backgroundColor: COLORS.surface, borderRadius: 12, borderWidth: 1, borderColor: COLORS.border, overflow: 'hidden', marginBottom: 8 },
   resultRow:    { flexDirection: 'row', alignItems: 'center', padding: 12, borderBottomWidth: 1, borderBottomColor: COLORS.border },
   resultInfo:   { flex: 1 },
-  resultName:   { fontSize: 14, fontWeight: '600', color: COLORS.dark },
+  resultName:   { fontSize: 14, fontWeight: '600', color: COLORS.text },
   resultMeta:   { fontSize: 12, color: COLORS.muted, marginTop: 2 },
-  catBadge:     { width: 32, height: 32, borderRadius: 16, backgroundColor: COLORS.primary, justifyContent: 'center', alignItems: 'center' },
-  catBadgeCheat:{ backgroundColor: '#FF8F00' },
-  catText:      { color: COLORS.white, fontSize: 16, fontWeight: '700' },
-  logTitle:     { fontSize: 16, fontWeight: '700', color: COLORS.dark, paddingHorizontal: 16, paddingTop: 8, paddingBottom: 4 },
+  catBadge:     { width: 32, height: 32, borderRadius: 16, backgroundColor: COLORS.secondary, justifyContent: 'center', alignItems: 'center' },
+  catBadgeCheat:{ backgroundColor: COLORS.primary },
+  catText:      { color: COLORS.text, fontSize: 16, fontWeight: '700' },
+  logTitle:     { fontSize: 16, fontWeight: '700', color: COLORS.text, paddingHorizontal: 16, paddingTop: 12, paddingBottom: 6 },
   emptyLog:     { color: COLORS.muted, textAlign: 'center', marginTop: 24, fontSize: 14 },
-  logRow:       { flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.white, marginHorizontal: 12, marginBottom: 6, borderRadius: 10, padding: 12, borderWidth: 1, borderColor: COLORS.border },
-  logRowCheat:  { borderColor: '#FFB74D', backgroundColor: '#FFF8E1' },
+  logRow:       { flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.surface, marginHorizontal: 12, marginBottom: 6, borderRadius: 12, padding: 12, borderWidth: 1, borderColor: COLORS.border },
+  logRowCheat:  { borderColor: COLORS.primary + '50', backgroundColor: COLORS.primary + '0A' },
   logInfo:      { flex: 1 },
-  logName:      { fontSize: 14, fontWeight: '600', color: COLORS.dark },
+  logName:      { fontSize: 14, fontWeight: '600', color: COLORS.text },
   logMeta:      { fontSize: 12, color: COLORS.muted, marginTop: 2 },
   deleteBtn:    { padding: 6 },
   deleteText:   { color: COLORS.danger, fontSize: 16, fontWeight: '700' },
