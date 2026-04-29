@@ -1,4 +1,7 @@
+[build]
+buildCommand = "cd backend && npm install"
+
 [deploy]
-startCommand = "node src/server.js"
+startCommand = "cd backend && node src/server.js"
 healthcheckPath = "/health"
 healthcheckTimeout = 30
