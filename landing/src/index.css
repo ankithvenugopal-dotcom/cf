@@ -1,0 +1,336 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Inter", "Helvetica Neue", system-ui, -apple-system, sans-serif;
+  background: #0a0a12;
+  color: #fff;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* ---------------------------------------------------------------- nav */
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 1.4rem 3rem;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.35), transparent);
+}
+
+.nav-links {
+  display: flex;
+  flex: 1;
+  justify-content: space-evenly;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.nav-links a {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: color 0.25s ease;
+}
+
+.nav-links a:hover {
+  color: #fff;
+}
+
+.nav-logo {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
+}
+
+/* ------------------------------------------------------------ section */
+
+.section {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: stretch;
+}
+
+/* Full-bleed fixed background layer; crossfades via opacity (0.6s). */
+.section-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
+
+.section-bg.is-active {
+  opacity: 1;
+}
+
+.section-bg img,
+.section-bg video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.section-bg::after {
+  /* subtle vignette so headlines stay readable on any background */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.35) 0%,
+    rgba(0, 0, 0, 0.05) 35%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+}
+
+.section-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1.2rem;
+  padding: 7rem 2rem 5.5rem;
+}
+
+.headline {
+  font-size: clamp(2.4rem, 7vw, 5.5rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.05;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.45);
+}
+
+.tagline {
+  max-width: 42rem;
+  font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+  font-weight: 400;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.88);
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.45);
+}
+
+/* -------------------------------------------------------------- cards */
+
+.card-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.4rem;
+  margin-top: 2.2rem;
+}
+
+.card {
+  /* shared glass look — driven by globalConfig.cardStyle via CSS vars */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+  width: 220px;
+  padding: 1.1rem;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  backdrop-filter: blur(var(--card-blur));
+  -webkit-backdrop-filter: blur(var(--card-blur));
+}
+
+.card-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* video-thumb variant */
+.card-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: calc(var(--card-radius) - 10px);
+  overflow: hidden;
+}
+
+.card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: #111;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s ease;
+}
+
+.play-btn:hover {
+  transform: translate(-50%, -50%) scale(1.12);
+}
+
+.play-btn svg {
+  margin-left: 2px;
+}
+
+/* stat variant */
+.card--stat {
+  justify-content: center;
+  min-height: 150px;
+}
+
+.card-value {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* note variant (sticky-note glass) */
+.card--note {
+  align-items: flex-start;
+  text-align: left;
+  width: 210px;
+  min-height: 170px;
+  background: color-mix(in srgb, var(--note-color, #ffffff) 65%, transparent);
+  border-color: color-mix(in srgb, var(--note-color, #ffffff) 80%, white);
+  color: #1c1c28;
+}
+
+.card--note .card-label {
+  color: #1c1c28;
+}
+
+.card-body {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: rgba(20, 20, 35, 0.8);
+}
+
+/* ------------------------------------------------------- scroll prompt */
+
+.scroll-prompt {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.scroll-prompt-circle {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: background 0.25s ease, transform 0.25s ease;
+  animation: prompt-bob 2.2s ease-in-out infinite;
+}
+
+.scroll-prompt:hover .scroll-prompt-circle {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.08);
+}
+
+.scroll-prompt-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+@keyframes prompt-bob {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 6px; }
+}
+
+/* ------------------------------------------------------------- mobile */
+
+@media (max-width: 768px) {
+  .nav {
+    padding: 1rem 1.2rem;
+    gap: 0.8rem;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    gap: 0.4rem 0.7rem;
+  }
+
+  .nav-links a {
+    font-size: 0.62rem;
+  }
+
+  .section-content {
+    padding: 6rem 1.2rem 6.5rem;
+  }
+
+  /* stack cards vertically, no tilt / overlap */
+  .card-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .card,
+  .card--note {
+    width: min(100%, 320px);
+    min-height: 0;
+  }
+}
